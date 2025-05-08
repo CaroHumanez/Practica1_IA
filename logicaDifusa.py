@@ -3,10 +3,10 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
 # === Definición de variables difusas ===
-interes = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'Interes')
-apertura = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'Apertura')
-edad = ctrl.Antecedent(np.arange(0, 12.1, 0.1), 'Edad')
-recomendabilidad = ctrl.Consequent(np.arange(0, 101, 1), 'Recomendabilidad')
+interes = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'interes')
+apertura = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'apertura')
+edad = ctrl.Antecedent(np.arange(0, 12.1, 0.1), 'edad')
+recomendabilidad = ctrl.Consequent(np.arange(0, 101, 1), 'recomendabilidad')
 
 # === Funcion Modificador===
 def modificacion(conjunto, potencia):
