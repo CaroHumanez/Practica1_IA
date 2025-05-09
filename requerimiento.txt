@@ -1,0 +1,4 @@
+streamlit
+experta
+scikit-fuzzy
+rdflib
