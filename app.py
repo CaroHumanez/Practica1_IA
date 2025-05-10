@@ -102,7 +102,7 @@ if st.button("🔍 Obtener recomendación"):
     engine.reset()
     engine.declare(Genero_favorito(valor=genero))
     engine.declare(Formato_preferido(valor=formato))
-    engine.declare(Idioma_preferido(valor=idioma))  # ✅ esto es lo que faltaba
+    engine.declare(Idioma_preferido(valor=idioma))
     engine.declare(Recomendabilidad(valor=nivel_reco))
 
     engine.run()
