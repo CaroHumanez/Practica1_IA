@@ -84,7 +84,17 @@ g.add((SPACE.tieneClasificacion, RDF.type, RDF.Property))
 g.add((SPACE.tieneClasificacion, RDFS.domain, SPACE.Contenido))  # Serie o Película
 g.add((SPACE.tieneClasificacion, RDFS.range, SPACE.ClasificacionEdad))
 
-# Propiedad 10 (FALTA)
+# Propiedad 10  relacionContenido
+g.add((SPACE.relacionContenido, RDF.type, RDF.Property))
+g.add((SPACE.relacionContenido, RDFS.domain, SPACE.Contenido))
+g.add((SPACE.relacionContenido, RDFS.range, SPACE.Contenido))
+
+# Subpropiedad: basadaEnPelicula (cuando una serie se basa en una película)
+g.add((SPACE.basadaEnPelicula, RDF.type, RDF.Property))
+g.add((SPACE.basadaEnPelicula, RDFS.domain, SPACE.Serie))
+g.add((SPACE.basadaEnPelicula, RDFS.range, SPACE.Pelicula))
+g.add((SPACE.basadaEnPelicula, RDFS.subPropertyOf, SPACE.relacionContenido))
+
 
 # === Instancias ===
 
