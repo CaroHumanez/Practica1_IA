@@ -2,10 +2,14 @@ from re import S
 from rdflib import Graph, Namespace, URIRef, BNode, Literal
 from rdflib.namespace import RDF, RDFS, FOAF, XSD, DC, DCTERMS
 from rdflib.collection import Collection
+from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib.namespace import RDF, RDFS, XSD
+from owlrl import DeductiveClosure, RDFS_Semantics
 
 g = Graph()
 SPACE = Namespace("http://SPACEample.org/space/")
 
+# === Prefijos ===
 g.bind("space", SPACE)
 g.bind("foaf", FOAF)
 g.bind("rdfs", RDFS)
@@ -13,9 +17,7 @@ g.bind("xsd", XSD)
 g.bind("dc", DC)
 g.bind("dcterms", DCTERMS)
 
-
 # === Clases ===
-# Declaración de clases una por una
 g.add((SPACE.Serie, RDF.type, RDFS.Class))
 g.add((SPACE.Pelicula, RDF.type, RDFS.Class))
 g.add((SPACE.Contenido, RDF.type, RDFS.Class))
@@ -97,7 +99,7 @@ g.add((SPACE.basadaEnPelicula, RDFS.subPropertyOf, SPACE.relacionContenido))
 
 
 # === Instancias ===
-# Clases e individuos representativos
+
 # === Idiomas ===
 idiomas = {
     "espanol": "Espa\u00f1ol",
@@ -221,5 +223,49 @@ for uri, title, director, actor, idioma, formato, epis, punt, genero, clasif, ba
     if based:
         g.add((SPACE[uri], SPACE.basadaEnPelicula, SPACE[based]))
 
+
+# == Inferencias ==
+
+# --- Aplicar razonamiento ---
+DeductiveClosure(RDFS_Semantics).expand(g)
+
+# --- Casos de inferencia a documentar ---
+
+# === Caso 1. Jerarquía de Clases ===
+print("\n--- Caso 1: Jerarquía de Clases ---")
+for s in g.subjects(RDF.type, SPACE.Contenido):
+    print(f"{s.split('/')[-1]} es inferido como Contenido")
+
+# === Caso 2. Inferencia por dominio o rango ===
+print("\n--- Caso 2: Inferencia por Dominio usando tieneEpisodios ---")
+for s, o in g.subject_objects(SPACE.tieneEpisodios):
+    s_type = list(g.objects(s, RDF.type))
+    
+    s_str = s.split('/')[-1]
+    o_str = str(o)  # o puede ser un Literal
+    
+    s_type_str = [t.split('/')[-1] for t in s_type if t == SPACE.Serie]
+    
+    print(f"{s_str} tieneEpisodios {o_str}")
+    print(f"  -> {s_str} tipo inferido: {s_type_str}")
+
+
+
+
+# Guardamos las triples antes de la inferencia
+original_triples = set(g)
+
+
+# Mostrar inferencias de subpropiedades
+print("\n--- Caso 3: Inferencias por subPropertyOf (basadaEnPelicula -> relacionContenido) ---")
+for s, o in g.subject_objects(SPACE.basadaEnPelicula):
+    if (s, SPACE.relacionContenido, o) in g:
+        s_str = s.split('/')[-1]
+        o_str = o.split('/')[-1]
+        print(f"{s_str} relacionContenido {o_str}")
+
+
+
+
 # Serialización en Turtle
-print(g.serialize(format="turtle"))
+#print(g.serialize(format="turtle"))
