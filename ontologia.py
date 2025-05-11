@@ -100,13 +100,12 @@ g.add((SPACE.basadaEnPelicula, RDFS.subPropertyOf, SPACE.relacionContenido))
 
 # === Instancias ===
 
+
 # === Idiomas ===
 idiomas = {
     "espanol": "Espa\u00f1ol",
     "ingles": "Ingl\u00e9s",
     "frances": "Franc\u00e9s",
-    "aleman": "Alem\u00e1n",
-    "japones": "Japon\u00e9s"
 }
 for k, v in idiomas.items():
     g.add((SPACE[k], RDF.type, SPACE.Idioma))
@@ -124,8 +123,8 @@ for ed in edades:
     clas_uri = SPACE["Edad" + ed.replace("+", "Plus")]
     g.add((clas_uri, RDF.type, SPACE.ClasificacionEdad))
 
-# === Generos ===
-generos = ["Comedia", "Drama", "Accion"]
+# === Géneros ===
+generos = ["CienciaFiccion", "Comedia", "Terror", "Drama", "Documental"]
 for gen in generos:
     g.add((SPACE[gen], RDF.type, SPACE.Genero))
 
@@ -135,7 +134,12 @@ directores = [
     ("spielberg", "Steven Spielberg"),
     ("tarantino", "Quentin Tarantino"),
     ("wachowski", "Lana Wachowski"),
-    ("bigelow", "Kathryn Bigelow")
+    ("bigelow", "Kathryn Bigelow"),
+    ("peele", "Jordan Peele"),
+    ("scott", "Ridley Scott"),
+    ("greta", "Greta Gerwig"),
+    ("zhao", "Chloé Zhao"),
+    ("morris", "Errol Morris")
 ]
 for uri, name in directores:
     g.add((SPACE[uri], RDF.type, SPACE.Director))
@@ -147,25 +151,67 @@ actores = [
     ("winslet", "Kate Winslet"),
     ("reeves", "Keanu Reeves"),
     ("washington", "Denzel Washington"),
-    ("watson", "Emma Watson")
+    ("watson", "Emma Watson"),
+    ("theron", "Charlize Theron"),
+    ("isaac", "Oscar Isaac"),
+    ("jovovich", "Milla Jovovich"),
+    ("nyong", "Lupita Nyong'o"),
+    ("murray", "Bill Murray"),
+    ("bale", "Christian Bale"),
+    ("gyllenhaal", "Maggie Gyllenhaal"),
+    ("burns", "Ken Burns")
 ]
 for uri, name in actores:
     g.add((SPACE[uri], RDF.type, SPACE.Actor))
     g.add((SPACE[uri], RDFS.label, Literal(name)))
 
-# === Peliculas ===
+# === Películas ===
 peliculas = [
-    ("inception", "Inception", "nolan", "dicaprio", "ingles", "4K", 148, 8.8, "Accion", "EdadPlus13"),
-    ("matrix", "The Matrix", "wachowski", "reeves", "ingles", "BluRay", 136, 8.7, "Accion", "EdadPlus16"),
+    # Ciencia Ficción
+    ("inception", "Inception", "nolan", "dicaprio", "ingles", "4K", 148, 8.8, "CienciaFiccion", "EdadPlus13"),
+    ("matrix", "The Matrix", "wachowski", "reeves", "ingles", "BluRay", 136, 8.7, "CienciaFiccion", "EdadPlus16"),
+    ("prometheus", "Prometheus", "scott", "theron", "espanol", "HD", 124, 7.0, "CienciaFiccion", "EdadPlus16"),
+    ("dune", "Dune", "scott", "isaac", "frances", "Streaming", 155, 8.1, "CienciaFiccion", "EdadPlus13"),
+    
+    # Comedia
+    ("ghostbusters", "Ghostbusters", "reitman", "murray", "ingles", "SD", 105, 7.8, "Comedia", "TP"),
+    ("barbie", "Barbie", "greta", "watson", "espanol", "4K", 114, 7.2, "Comedia", "EdadPlus7"),
+    ("frenchdispatch", "The French Dispatch", "anderson", "bale", "frances", "BluRay", 108, 7.4, "Comedia", "EdadPlus13"),
+    ("meanGirls", "Mean Girls", "waters", "gyllenhaal", "ingles", "HD", 97, 7.0, "Comedia", "EdadPlus13"),
+    
+    # Terror
+    ("getout", "Get Out", "peele", "washington", "ingles", "4K", 104, 7.7, "Terror", "EdadPlus16"),
+    ("us", "Us", "peele", "nyong", "espanol", "Streaming", 116, 6.8, "Terror", "EdadPlus16"),
+    ("residentEvil", "Resident Evil", "anderson", "jovovich", "frances", "HD", 100, 6.7, "Terror", "EdadPlus16"),
+    ("babadook", "The Babadook", "kent", "winslet", "ingles", "BluRay", 93, 6.8, "Terror", "EdadPlus13"),
+
+    # Drama
     ("titanic", "Titanic", "cameron", "winslet", "espanol", "HD", 195, 7.8, "Drama", "EdadPlus13"),
-    ("django", "Django Unchained", "tarantino", "washington", "ingles", "4K", 165, 8.4, "Accion", "EdadPlus18"),
-    ("harrypotter", "Harry Potter", "columbus", "watson", "ingles", "Streaming", 152, 7.6, "Comedia", "EdadPlus7")
+    ("interstellar", "Interstellar", "nolan", "dicaprio", "ingles", "4K", 169, 8.6, "Drama", "EdadPlus13"),
+    ("nomadland", "Nomadland", "zhao", "watson", "frances", "Streaming", 108, 7.3, "Drama", "EdadPlus13"),
+    ("littleWomen", "Little Women", "greta", "watson", "ingles", "BluRay", 135, 7.8, "Drama", "EdadPlus13"),
+
+    # Documental
+    ("fogofwar", "The Fog of War", "morris", "washington", "ingles", "SD", 95, 8.2, "Documental", "EdadPlus13"),
+    ("13th", "13th", "duvernay", "washington", "espanol", "Streaming", 100, 8.3, "Documental", "EdadPlus13"),
+    ("citizenfour", "Citizenfour", "poitras", "watson", "frances", "HD", 114, 8.0, "Documental", "EdadPlus13"),
+    ("civilwar", "The Civil War", "burns", "burns", "ingles", "BluRay", 70, 8.9, "Documental", "TP")
 ]
 
-# Algunos directores no definidos aún
+# Directores extra
 extra_directores = {
     "cameron": "James Cameron",
-    "columbus": "Chris Columbus"
+    "anderson": "Wes Anderson",
+    "reitman": "Ivan Reitman",
+    "greta": "Greta Gerwig",
+    "scott": "Ridley Scott",
+    "peele": "Jordan Peele",
+    "duvernay": "Ava DuVernay",
+    "poitras": "Laura Poitras",
+    "kent": "Jennifer Kent",
+    "zhao": "Chloé Zhao",
+    "burns": "Ken Burns",
+    "waters": "Mark Waters"
 }
 for uri, name in extra_directores.items():
     g.add((SPACE[uri], RDF.type, SPACE.Director))
@@ -184,29 +230,52 @@ for uri, title, director, actor, idioma, formato, dur, punt, genero, clasif in p
 
 # === Series ===
 series = [
-    ("breakingbad", "Breaking Bad", "gilligan", "cranston", "espanol", "HD", 62, 9.5, "Drama", "EdadPlus16", "titanic"),
-    ("friends", "Friends", "bright", "aniston", "ingles", "SD", 236, 8.9, "Comedia", "TP", None),
-    ("theboys", "The Boys", "goldberg", "urban", "ingles", "4K", 24, 8.7, "Accion", "EdadPlus18", "inception"),
-    ("dark", "Dark", "bood", "weise", "aleman", "Streaming", 26, 8.8, "Drama", "EdadPlus13", None),
-    ("lupin", "Lupin", "sy", "omay", "frances", "Streaming", 15, 7.8, "Accion", "EdadPlus13", "matrix")
+    ("strangerthings", "Stranger Things", "duffer", "brown", "ingles", "4K", 34, 8.7, "CienciaFiccion", "EdadPlus13", "contact"),
+    ("chernobyl", "Chernobyl", "mazin", "harris", "ingles", "BluRay", 5, 9.4, "Drama", "EdadPlus16", None),
+    ("dark", "Dark", "bood", "weise", "aleman", "Streaming", 26, 8.8, "CienciaFiccion", "EdadPlus13", None),
+    ("blackmirror", "Black Mirror", "brooker", "mara", "ingles", "Streaming", 27, 8.8, "CienciaFiccion", "EdadPlus16", None),
+    ("theoffice", "The Office", "daniels", "carell", "ingles", "HD", 201, 8.9, "Comedia", "TP", None),
+    ("lupin", "Lupin", "sy", "omay", "frances", "Streaming", 15, 7.8, "Drama", "EdadPlus13", "gravity"),
+    ("hillhouse", "The Haunting of Hill House", "flanagan", "pedretti", "ingles", "HD", 10, 8.6, "Terror", "EdadPlus16", "psycho"),
+    ("cosmos", "Cosmos: A Spacetime Odyssey", "tyson", "tyson", "ingles", "Streaming", 13, 9.3, "Documental", "TP", None),
+    ("loveDeathRobots", "Love, Death & Robots", "miller", "bernal", "espanol", "4K", 35, 8.4, "CienciaFiccion", "EdadPlus18", None),
+    ("modernfamily", "Modern Family", "levitan", "vergara", "ingles", "HD", 250, 8.5, "Comedia", "TP", None),
+    ("makingamurderer", "Making a Murderer", "demos", "avery", "ingles", "Streaming", 20, 8.6, "Documental", "EdadPlus16", None),
+    ("marianne", "Marianne", "siri", "bela", "frances", "Streaming", 8, 7.5, "Terror", "EdadPlus18", None)
 ]
 
 # Directores y actores faltantes en series
 series_extra = {
-    "gilligan": "Vince Gilligan",
-    "bright": "Kevin Bright",
-    "goldberg": "Evan Goldberg",
-    "bood": "Baran bo Odar",
+    "duffer": "Duffer Brothers",
+    "mazin": "Craig Mazin",
+    "brooker": "Charlie Brooker",
+    "daniels": "Greg Daniels",
     "sy": "Louis Leterrier",
-    "cranston": "Bryan Cranston",
-    "aniston": "Jennifer Aniston",
-    "urban": "Karl Urban",
+    "flanagan": "Mike Flanagan",
+    "tyson": "Neil deGrasse Tyson",
+    "miller": "Tim Miller",
+    "levitan": "Steven Levitan",
+    "demos": "Laura Ricciardi",
+    "siri": "Samuel Bodin",
+
+    "brown": "Millie Bobby Brown",
+    "harris": "Jared Harris",
     "weise": "Lisa Weise",
-    "omay": "Omar Sy"
+    "mara": "Kate Mara",
+    "carell": "Steve Carell",
+    "omay": "Omar Sy",
+    "pedretti": "Victoria Pedretti",
+    "bernal": "Gael García Bernal",
+    "vergara": "Sofía Vergara",
+    "avery": "Steven Avery",
+    "bela": "Lucie Boujenah"
 }
 
 for uri, name in series_extra.items():
-    role = SPACE.Director if uri in ["gilligan", "bright", "goldberg", "bood", "sy"] else SPACE.Actor
+    role = SPACE.Director if uri in [
+        "duffer", "mazin", "brooker", "daniels", "sy", "flanagan",
+        "tyson", "miller", "levitan", "demos", "siri"
+    ] else SPACE.Actor
     g.add((SPACE[uri], RDF.type, role))
     g.add((SPACE[uri], RDFS.label, Literal(name)))
 
@@ -222,6 +291,8 @@ for uri, title, director, actor, idioma, formato, epis, punt, genero, clasif, ba
     g.add((SPACE[uri], SPACE.tieneClasificacion, SPACE[clasif]))
     if based:
         g.add((SPACE[uri], SPACE.basadaEnPelicula, SPACE[based]))
+
+
 
 #guardo el grafo antes de las inferencias
 grafo_original = Graph()
