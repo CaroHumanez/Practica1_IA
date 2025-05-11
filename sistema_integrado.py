@@ -168,24 +168,24 @@ recomendabilidad = ctrl.Consequent(np.arange(0, 101, 1), 'recomendabilidad')
 def modificacion(conjunto, potencia):
     return conjunto ** potencia
 
-# Funciones de membresía: Interés del usuario
+# Funciones de pertenencia: Interés del usuario
 interes['bajo'] = fuzz.trimf(interes.universe, [0, 0, 4])
 interes['medio'] = fuzz.trapmf(interes.universe, [3.5, 4.5, 5.5, 6.5])
 interes['alto'] = fuzz.gaussmf(interes.universe, 8, 1.2)
 interes['muy_interesado'] = modificacion(fuzz.gaussmf(interes.universe, 8, 1.2), 2)
 
-# Funciones de membresía: Apertura a nuevos géneros
+# Funciones de pertenencia: Apertura a nuevos géneros
 apertura['cerrado'] = fuzz.trapmf(apertura.universe, [0, 0, 2.5, 4])
 apertura['neutral'] = fuzz.gaussmf(apertura.universe, 5, 1.5)
 apertura['abierto'] = fuzz.trimf(apertura.universe, [6, 8, 10])
 apertura['mas_menos_abierto'] = modificacion(fuzz.trimf(apertura.universe, [6, 8, 10]), 1/2)
 
-# Funciones de membresía: Adecuación por edad
+# Funciones de pertenencia: Adecuación por edad
 edad['nino'] = fuzz.trimf(edad.universe, [0, 0, 3])
 edad['adolescente'] = fuzz.trapmf(edad.universe, [2, 4, 6, 8])
 edad['adulto'] = fuzz.gaussmf(edad.universe, 9, 1)
 
-# Funciones de membresía: Nivel de recomendabilidad
+# Funciones de pertenencia: Nivel de recomendabilidad
 recomendabilidad['baja'] = fuzz.trapmf(recomendabilidad.universe, [0, 0, 20, 35])
 recomendabilidad['media'] = fuzz.gaussmf(recomendabilidad.universe, 50, 10)
 recomendabilidad['alta'] = fuzz.trapmf(recomendabilidad.universe, [65, 80, 100, 100])
