@@ -47,7 +47,7 @@ def crear_sistema_difuso():
     # Variables de entrada
     interes = ctrl.Antecedent(np.arange(0, 11, 0.1), 'interes')
     apertura = ctrl.Antecedent(np.arange(0, 11, 0.1), 'apertura')
-    edad = ctrl.Antecedent(np.arange(0, 13, 0.1), 'edad')
+    edad = ctrl.Antecedent(np.arange(11, 60, 0.1), 'edad')
     
     # Variable de salida
     recomendacion = ctrl.Consequent(np.arange(0, 101, 1), 'recomendacion')
@@ -104,7 +104,7 @@ def main():
         
         with col1:
             nombre = st.text_input("Nombre del usuario")
-            edad_val = st.slider("Edad del contenido", 0, 12, 8)
+            edad_val = st.slider("Edad del contenido", 11, 60, 8)
             genero = st.selectbox("Género", list(peliculas.keys()))
             
         with col2:
