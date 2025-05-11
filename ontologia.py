@@ -223,6 +223,10 @@ for uri, title, director, actor, idioma, formato, epis, punt, genero, clasif, ba
     if based:
         g.add((SPACE[uri], SPACE.basadaEnPelicula, SPACE[based]))
 
+#guardo el grafo antes de las inferencias
+grafo_original = Graph()
+for triple in g:
+    grafo_original.add(triple)
 
 # == Inferencias ==
 
@@ -249,13 +253,6 @@ for s, o in g.subject_objects(SPACE.tieneEpisodios):
     print(f"{s_str} tieneEpisodios {o_str}")
     print(f"  -> {s_str} tipo inferido: {s_type_str}")
 
-
-
-
-# Guardamos las triples antes de la inferencia
-original_triples = set(g)
-
-
 # Mostrar inferencias de subpropiedades
 print("\n--- Caso 3: Inferencias por subPropertyOf (basadaEnPelicula -> relacionContenido) ---")
 for s, o in g.subject_objects(SPACE.basadaEnPelicula):
@@ -264,7 +261,16 @@ for s, o in g.subject_objects(SPACE.basadaEnPelicula):
         o_str = o.split('/')[-1]
         print(f"{s_str} relacionContenido {o_str}")
 
+#Coparacion de grafos
+# Tripletas inferidas = las que están en g pero no en original_graph
+inferred_triples = set(g) - set(grafo_original)
 
+print("\n--- Nuevos hechos inferidos automáticamente ---")
+# Filtrar para mostrar solo inferencias que tengan que ver con películas/series
+for triple in inferred_triples:
+    # Asegurarnos de que la inferencia esté relacionada con películas o series
+    if (triple[0], RDF.type, SPACE.Pelicula) in g or (triple[0], RDF.type, SPACE.Serie) in g:
+        print(triple)
 
 
 # Serialización en Turtle
