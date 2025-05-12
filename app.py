@@ -104,9 +104,15 @@ if st.button("🔍 Obtener recomendación"):
     engine.declare(Formato_preferido(valor=formato))
     engine.declare(Idioma_preferido(valor=idioma))
     engine.declare(Recomendabilidad(valor=nivel_reco))
-
     engine.run()
 
-    for fact in engine.facts.values():
+    recomendacion = None
+    for _, fact in engine.facts.items():
         if isinstance(fact, Recomendacion):
-            st.success(fact['valor'])
+            recomendacion = fact['valor']
+            st.success(recomendacion)
+
+    if not recomendacion:
+        st.warning("⚠️ No encontramos una recomendación adecuada para este perfil. Intenta ajustar tus preferencias.")
+
+
