@@ -12,18 +12,20 @@ g, SPACE = cargar_grafo()
 # --------------------------
 
 class Pelicula(Fact):
-    nombre = Field(str, mandatory=True)
-    genero = Field(str, mandatory=True)
-    clasificacion = Field(str, mandatory=True)
-    idioma = Field(str, mandatory=True)
-    formato = Field(str, mandatory=True)
+    nombre = ""
+    genero = ""
+    clasificacion = ""
+    idioma = ""
+    formato = ""
 
 class Serie(Fact):
-    nombre = Field(str, mandatory=True)
-    genero = Field(str, mandatory=True)
-    clasificacion = Field(str, mandatory=True)
-    idioma = Field(str, mandatory=True)
-    formato = Field(str, mandatory=True)
+    nombre = ""
+    genero = ""
+    clasificacion = ""
+    idioma = ""
+    formato = ""
+
+#AGREGAR LAS OTRAS MUCHAS CLASES DE PREFERENCIA DEL USURARIO
 
 
 # --------------------------
