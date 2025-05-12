@@ -6,7 +6,7 @@ def cargar_recomendabilidad():
     # Variables difusas
     interes = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'interes')
     apertura = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'apertura')
-    edad = ctrl.Antecedent(np.arange(0, 61, 0.1), 'edad')  # Rango 0-60 años
+    edad = ctrl.Antecedent(np.arange(0, 61, 1), 'edad')  # Rango 0-60 años
     recomendabilidad = ctrl.Consequent(np.arange(0, 101, 1), 'recomendabilidad')
 
     # Funciones de pertenencia: Interés
@@ -46,3 +46,23 @@ def cargar_recomendabilidad():
 
     sistema = ctrl.ControlSystem(reglas)
     return sistema
+
+#desfizzificación
+def evaluar_recomendabilidad(interes_val, apertura_val, edad_val, metodo='centroid'):
+    sistema = cargar_recomendabilidad()
+    simulacion = ctrl.ControlSystemSimulation(sistema)
+
+    # Establecer el método de defuzzificación deseado
+    simulacion.ctrl.consequents[0].defuzzify_method = metodo
+
+    # Entrada de datos
+    simulacion.input['interes'] = interes_val
+    simulacion.input['apertura'] = apertura_val
+    simulacion.input['edad'] = edad_val
+
+    # Computar resultado
+    simulacion.compute()
+
+    # Resultado
+    return simulacion.output['recomendabilidad']
+    
