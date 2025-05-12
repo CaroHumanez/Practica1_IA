@@ -37,6 +37,7 @@ g.add((SPACE.IdiomaOriginal, RDF.type, RDFS.Class))
 g.add((SPACE.Serie, RDFS.subClassOf, SPACE.Contenido))
 g.add((SPACE.Pelicula, RDFS.subClassOf, SPACE.Contenido))
 
+g.add((SPACE.SerieAnimada, RDFS.subClassOf, SPACE.Serie))
 g.add((SPACE.PeliculaAnimada, RDFS.subClassOf, SPACE.Pelicula))
 g.add((SPACE.IdiomaDoblado, RDFS.subClassOf, SPACE.Idioma))
 g.add((SPACE.IdiomaOriginal, RDFS.subClassOf, SPACE.Idioma))
