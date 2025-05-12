@@ -1,3 +1,8 @@
+# Para compatibilidad con versiones anteriores, siempre utilizarlo.
+import collections.abc
+if not hasattr(collections, 'Mapping'):
+    collections.Mapping = collections.abc.Mapping
+
 from experta import Fact, KnowledgeEngine, Rule, Field, MATCH
 from rdflib import Graph, Namespace
 from owlrl import DeductiveClosure, RDFS_Semantics

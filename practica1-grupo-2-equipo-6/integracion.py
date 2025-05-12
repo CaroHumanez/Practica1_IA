@@ -1,3 +1,8 @@
+# Para compatibilidad con versiones anteriores, siempre utilizarlo.
+import collections.abc
+if not hasattr(collections, 'Mapping'):
+    collections.Mapping = collections.abc.Mapping
+    
 import streamlit as st
 from experta import *
 from logicaDifusa import cargar_recomendabilidad
