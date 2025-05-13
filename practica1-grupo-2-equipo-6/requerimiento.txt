@@ -1,0 +1,8 @@
+streamlit
+experta
+scikit-fuzzy
+rdflib
+nump 
+owlrl
+scipy
+networkx
