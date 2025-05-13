@@ -357,7 +357,7 @@ for s, o in g.subject_objects(SPACE.basadaEnPelicula):
         o_str = o.split('/')[-1]
         print(f"{s_str} relacionContenido {o_str}")
 
-#Coparacion de grafos
+#COMPARACIÓN
 # Tripletas inferidas = las que están en g pero no en original_graph
 inferred_triples = set(g) - set(grafo_original)
 
