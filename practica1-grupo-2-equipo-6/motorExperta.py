@@ -56,9 +56,9 @@ peliculas_lista = []
 series_lista = []
 
 for tipo, lista in [(SPACE.Pelicula, peliculas_lista), (SPACE.Serie, series_lista)]:
-    print(f"Extrayendo {tipo.split('#')[-1]}...")
+    print(f"Extrayendo {tipo.split('/')[-1]}...")
     for s in g.subjects(predicate=None, object=tipo):
-        nombre = s.split("#")[-1]
+        nombre = s.split("/")[-1]
 
         genero_uri = g.value(s, SPACE.tieneGenero)
         clasif_uri = g.value(s, SPACE.tieneClasificacion)
@@ -67,14 +67,14 @@ for tipo, lista in [(SPACE.Pelicula, peliculas_lista), (SPACE.Serie, series_list
         
 
         if genero_uri and clasif_uri and idioma_uri and formato_uri:
-            genero = genero_uri.split("#")[-1]
-            idioma = idioma_uri.split("#")[-1]
-            formato = formato_uri.split("#")[-1]
-            print(f"  Nombre: {nombre}, Género: {genero}, Idioma: {idioma}, Formato: {formato}")
+            genero = genero_uri.split("/")[-1]
+            idioma = idioma_uri.split("/")[-1]
+            formato = formato_uri.split("/")[-1]
+            # print(f"  Nombre: {nombre}, Género: {genero}, Idioma: {idioma}, Formato: {formato}")
             lista.append({
                 "nombre": nombre,
                 "genero": genero,
-                "clasificacion": clasif_uri.split("#")[-1],
+                "clasificacion": clasif_uri.split("/")[-1],
                 "idioma": idioma,
                 "formato": formato
             })
@@ -91,7 +91,9 @@ class MotorRecomendacion(KnowledgeEngine):
     def __init__(self, peliculas, series):
         super().__init__()
         self.peliculas_ontologia = peliculas
+        print(f"Peliculas: {self.peliculas_ontologia}")
         self.series_ontologia = series
+
 
     def cargar_hechos_iniciales(self):
         clasificacion_map = {
@@ -99,13 +101,20 @@ class MotorRecomendacion(KnowledgeEngine):
             "+16": "adolescente",
             "+18": "adulto",
         }
+        print("Cargando hechos iniciales...")
+        print(clasificacion_map)
 
         for p in self.peliculas_ontologia:
-            clasificacion = clasificacion_map.get(p["clasificacion"].split("#")[-1], 0)
+            #print(p)
+            clasificacion = clasificacion_map.get(p["clasificacion"].split("/")[-1])
+            print(clasificacion)
+            #print(f"Clasificacion: {p['clasificacion'].split('#')[-1]} -> {clasificacion}")
             self.declare(Pelicula(nombre=p["nombre"], genero=p["genero"], clasificacion=clasificacion, idioma=p["idioma"], formato=p["formato"]))
+            # print(p["clasificacion"].split("#")[-1], clasificacion)
+            
 
         for s in self.series_ontologia:
-            clasificacion = clasificacion_map.get(s["clasificacion"].split("#")[-1], 0)
+            clasificacion = clasificacion_map.get(s["clasificacion"].split("/")[-1])
             self.declare(Serie(nombre=s["nombre"], genero=s["genero"], clasificacion=clasificacion, idioma=s["idioma"], formato=s["formato"]))
 
     # High-priority rules
@@ -127,8 +136,8 @@ class MotorRecomendacion(KnowledgeEngine):
 
     # High-priority rules based on format and score
     @Rule(Usuario(formato_usuario="serie", nivel_recomendacion=MATCH.n), salience=30)
-    def recomendar_serie_por_formato_y_puntuacion(self, formato_usuario, n):
-        mejores_series = [serie for serie in self.series_ontologia if serie['formato'] == formato_usuario]
+    def recomendar_serie_por_formato_y_puntuacion(self, n):
+        mejores_series = [serie for serie in self.series_ontologia ]
         if mejores_series:
             mejor_serie = max(mejores_series, key=lambda s: int(s['clasificacion']))
             self.declare(Fact(serie_recomendada=mejor_serie['nombre'], nivel=n))

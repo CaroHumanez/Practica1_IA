@@ -47,7 +47,7 @@ def main():
                 edad_usuario = "adolescente"
             else:
                 edad_usuario = "adulto"  
-
+            print(f"Edad del usuario: {edad_usuario}")
             # Motor Experto
             motor.reset()
             motor.cargar_hechos_iniciales()
@@ -60,8 +60,6 @@ def main():
                 nivel_recomendacion=str(nivel_usuario)
             ))
             motor.run()
-            for fact in motor.facts.values():
-                st.write(fact)
 
             # Mostrar resultados
             st.subheader(f"Resultados para {nombre_usuario}")

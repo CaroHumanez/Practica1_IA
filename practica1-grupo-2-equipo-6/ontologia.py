@@ -200,7 +200,7 @@ peliculas = [
     ("dune", "Dune", "scott", "isaac", "frances", "Streaming", 155, 8.1, "CienciaFiccion", "+16", "Netflix"),
     
     ("ghostbusters", "Ghostbusters", "reitman", "murray", "ingles", "SD", 105, 7.8, "Comedia", "+7", "DisneyPlus"),
-    ("barbie", "Barbie", "greta", "watson", "espanol", "4K", 114, 7.2, "Comedia", "EdadPlus7", "HBO_Max"),
+    ("barbie", "Barbie", "greta", "watson", "espanol", "4K", 114, 7.2, "Comedia", "+7", "HBO_Max"),
     ("frenchdispatch", "The French Dispatch", "anderson", "bale", "frances", "BluRay", 108, 7.4, "Comedia", "+16", "Netflix"),
     ("meanGirls", "Mean Girls", "waters", "gyllenhaal", "ingles", "HD", 97, 7.0, "Comedia", "+16", "DisneyPlus"),
     
