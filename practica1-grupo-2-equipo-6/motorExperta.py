@@ -118,8 +118,8 @@ class MotorRecomendacion(KnowledgeEngine):
             self.declare(Serie(nombre=s["nombre"], genero=s["genero"], clasificacion=clasificacion, idioma=s["idioma"], formato=s["formato"]))
 
     # High-priority rules
-    @Rule(Usuario(genero_usuario=MATCH.genero, idioma_usuario=MATCH.idioma, formato_usuario="serie", nivel_recomendacion=MATCH.n, salience=30))
-    def recomendar_serie_optimizada(self, genero, idioma, n):
+    @Rule(Usuario(genero_usuario=MATCH.genero, idioma_usuario=MATCH.idioma, formato_usuario="serie", nivel_recomendacion="bajo", salience=30))
+    def recomendar_serie_optimizada(self, genero, idioma, n="bajo"):
         mejores_series = [serie for serie in self.series_ontologia if serie['genero'] == genero and serie['idioma'] == idioma]
         if mejores_series:
             mejor_serie = max(mejores_series, key=lambda s: int(s['clasificacion']))
@@ -137,8 +137,8 @@ class MotorRecomendacion(KnowledgeEngine):
             self.halt()
 
     # High-priority rules based on format and score
-    @Rule(Usuario(formato_usuario="serie", nivel_recomendacion=MATCH.n), salience=30)
-    def recomendar_serie_por_formato_y_puntuacion(self, n):
+    @Rule(Usuario(formato_usuario="serie", nivel_recomendacion="baja"), salience=30)
+    def recomendar_serie_por_formato_y_puntuacion(self, n="baja"):
         mejores_series = [serie for serie in self.series_ontologia ]
         if mejores_series:
             mejor_serie = max(mejores_series, key=lambda s: int(s['clasificacion']))
@@ -174,17 +174,17 @@ class MotorRecomendacion(KnowledgeEngine):
 
     # Medium-priority rules combining genre, language, and format
     @Rule(Usuario(genero_usuario=MATCH.genero, idioma_usuario=MATCH.idioma, formato_usuario="serie", nivel_recomendacion=MATCH.n), salience=20)
-    def serie_por_genero_idioma_y_formato(self, genero, idioma, formato_usuario, n):
+    def serie_por_genero_idioma_y_formato(self, genero, idioma, n):
         for serie in self.series_ontologia:
-            if serie['genero'] == genero and serie['idioma'] == idioma and serie['formato'] == formato_usuario:
+            if serie['genero'] == genero and serie['idioma'] == idioma:
                 self.declare(Fact(serie_recomendada=serie['nombre'], nivel=n))
                 print("REGLA 7")
                 self.halt()
 
     @Rule(Usuario(genero_usuario=MATCH.genero, idioma_usuario=MATCH.idioma, formato_usuario="pelicula",nivel_recomendacion=MATCH.n), salience=20)
-    def pelicula_por_genero_idioma_y_formato(self, genero, idioma, formato_usuario, n):
+    def pelicula_por_genero_idioma_y_formato(self, genero, idioma, n):
         for pelicula in self.peliculas_ontologia:
-            if pelicula['genero'] == genero and pelicula['idioma'] == idioma and pelicula['formato'] == formato_usuario:
+            if pelicula['genero'] == genero and pelicula['idioma'] == idioma:
                 self.declare(Fact(pelicula_recomendada=pelicula['nombre'], nivel=n))
                 print("REGLA 8")
                 self.halt()
