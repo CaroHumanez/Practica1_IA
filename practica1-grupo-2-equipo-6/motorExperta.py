@@ -124,14 +124,16 @@ class MotorRecomendacion(KnowledgeEngine):
         if mejores_series:
             mejor_serie = max(mejores_series, key=lambda s: int(s['clasificacion']))
             self.declare(Fact(serie_recomendada=mejor_serie['nombre'], nivel_recomendacion=n))
+            print("REGLA 1")
             self.halt()
 
-    @Rule(Usuario(genero_usuario=MATCH.genero, idioma_usuario=MATCH.idioma, formato_usuario="pelicula", nivel_recomendarion=MATCH.n), salience=30)
+    @Rule(Usuario(genero_usuario=MATCH.genero, idioma_usuario=MATCH.idioma, formato_usuario="pelicula", nivel_recomendacion=MATCH.n), salience=30)
     def recomendar_pelicula_optimizada(self, genero, idioma, n):
         mejores_peliculas = [pelicula for pelicula in self.peliculas_ontologia if pelicula['genero'] == genero and pelicula['idioma'] == idioma]
         if mejores_peliculas:
             mejor_pelicula = max(mejores_peliculas, key=lambda p: int(p['clasificacion']))
             self.declare(Fact(pelicula_recomendada=mejor_pelicula['nombre'], nivel=n))
+            print("REGLA 2")
             self.halt()
 
     # High-priority rules based on format and score
@@ -141,6 +143,7 @@ class MotorRecomendacion(KnowledgeEngine):
         if mejores_series:
             mejor_serie = max(mejores_series, key=lambda s: int(s['clasificacion']))
             self.declare(Fact(serie_recomendada=mejor_serie['nombre'], nivel=n))
+            print("REGLA 3")
             self.halt()
 
     @Rule(Usuario(formato_usuario="pelicula", nivel_recomendacion=MATCH.n), salience=30)
@@ -149,6 +152,7 @@ class MotorRecomendacion(KnowledgeEngine):
         if mejores_peliculas:
             mejor_pelicula = max(mejores_peliculas, key=lambda p: int(p['clasificacion']))
             self.declare(Fact(pelicula_recomendada=mejor_pelicula['nombre'], nivel=n))
+            print("REGLA 4")
             self.halt()
 
     # Medium-priority rules
@@ -157,6 +161,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for serie in self.series_ontologia:
             if serie['genero'] == "CienciaFiccion" and serie['idioma'] == "espanol":
                 self.declare(Fact(serie_recomendada=serie['nombre'], nivel=n))
+                print("REGLA 5")
                 self.halt()
 
     @Rule(Usuario(genero_usuario="CienciaFiccion", idioma_usuario="espanol", formato_usuario="pelicula", nivel_recomendacion=MATCH.n), salience=20)
@@ -164,6 +169,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for pelicula in self.peliculas_ontologia:
             if pelicula['genero'] == "CienciaFiccion" and pelicula['idioma'] == "espanol":
                 self.declare(Fact(pelicula_recomendada=pelicula['nombre'], nivel=n))
+                print("REGLA 6")
                 self.halt()
 
     # Medium-priority rules combining genre, language, and format
@@ -172,6 +178,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for serie in self.series_ontologia:
             if serie['genero'] == genero and serie['idioma'] == idioma and serie['formato'] == formato_usuario:
                 self.declare(Fact(serie_recomendada=serie['nombre'], nivel=n))
+                print("REGLA 7")
                 self.halt()
 
     @Rule(Usuario(genero_usuario=MATCH.genero, idioma_usuario=MATCH.idioma, formato_usuario="pelicula",nivel_recomendacion=MATCH.n), salience=20)
@@ -179,6 +186,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for pelicula in self.peliculas_ontologia:
             if pelicula['genero'] == genero and pelicula['idioma'] == idioma and pelicula['formato'] == formato_usuario:
                 self.declare(Fact(pelicula_recomendada=pelicula['nombre'], nivel=n))
+                print("REGLA 8")
                 self.halt()
 
     # Low-priority rules
@@ -187,6 +195,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for serie in self.series_ontologia:
             if serie['genero'] == g:
                 self.declare(Fact(serie_recomendada=serie['nombre'], nivel=n))
+                print("REGLA 9")
                 self.halt()
 
     @Rule(Usuario(genero_usuario=MATCH.g, formato_usuario="pelicula",nivel_recomendacion=MATCH.n), salience=3)
@@ -194,6 +203,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for pelicula in self.peliculas_ontologia:
             if pelicula['genero'] == g:
                 self.declare(Fact(pelicula_recomendada=pelicula['nombre'], nivel=n))
+                print("REGLA 10")
                 self.halt()
 
     # Low-priority rules based on format only
@@ -202,6 +212,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for serie in self.series_ontologia:
             if serie['formato'] == formato_usuario:
                 self.declare(Fact(serie_recomendada=serie['nombre'], nivel=n))
+                print("REGLA 11")
                 self.halt()
 
     @Rule(Usuario(formato_usuario="Pelicula", nivel_recomendacion=MATCH.n), salience=3)
@@ -209,6 +220,7 @@ class MotorRecomendacion(KnowledgeEngine):
         for pelicula in self.peliculas_ontologia:
             if pelicula['formato'] == formato_usuario:
                 self.declare(Fact(pelicula_recomendada=pelicula['nombre'], nivel=n))
+                print("REGLA 12")
                 self.halt()
 
     # Wildcard rules
@@ -216,12 +228,14 @@ class MotorRecomendacion(KnowledgeEngine):
     def serie_comodin(self, n):
         if self.series_ontologia:
             self.declare(Fact(serie_recomendada=self.series_ontologia[0]['nombre'], nivel=n))
+            print("REGLA 13")
             self.halt()
 
     @Rule(Usuario(formato_usuario="pelicula",nivel_recomendacion=MATCH.n, salience=1))
     def pelicula_comodin(self, n):
         if self.peliculas_ontologia:
             self.declare(Fact(pelicula_recomendada=self.peliculas_ontologia[0]['nombre'], nivel=n))
+            print("REGLA 14")
             self.halt()
 
     # Wildcard rules based on minimum score
@@ -230,6 +244,7 @@ class MotorRecomendacion(KnowledgeEngine):
         if self.series_ontologia:
             mejor_serie = max(self.series_ontologia, key=lambda s: int(s['clasificacion']))
             self.declare(Fact(serie_recomendada=mejor_serie['nombre'], nivel=n))
+            print("REGLA 15")
             self.halt()
 
     @Rule(Usuario(formato_usuario="pelicula", nivel_recomendacion=MATCH.n, salience=1))
@@ -237,5 +252,6 @@ class MotorRecomendacion(KnowledgeEngine):
         if self.peliculas_ontologia:
             mejor_pelicula = max(self.peliculas_ontologia, key=lambda p: int(p['clasificacion']))
             self.declare(Fact(pelicula_recomendada=mejor_pelicula['nombre'], nivel=n))
+            print("REGLA 16")
             self.halt()
 

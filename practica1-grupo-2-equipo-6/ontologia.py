@@ -370,7 +370,7 @@ for triple in inferred_triples:
 
 
 # Serialización en Turtle
-print(g.serialize(format="turtle"))
+#print(g.serialize(format="turtle"))
 
 
 def cargar_grafo():
