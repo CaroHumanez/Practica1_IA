@@ -2,12 +2,14 @@ import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
-def cargar_recomendabilidad():
+def cargar_recomendabilidad(metodo='centroid'):
     # Variables difusas
     interes = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'interes')
     apertura = ctrl.Antecedent(np.arange(0, 10.1, 0.1), 'apertura')
     edad = ctrl.Antecedent(np.arange(0, 61, 1), 'edad')  # Rango 0-60 años
     recomendabilidad = ctrl.Consequent(np.arange(0, 101, 1), 'recomendabilidad')
+
+    recomendabilidad.defuzzify_method = metodo
 
     # Funciones de pertenencia: Interés
     interes['bajo'] = fuzz.trimf(interes.universe, [0, 0, 4])
@@ -49,20 +51,14 @@ def cargar_recomendabilidad():
 
 #desfizzificación
 def evaluar_recomendabilidad(interes_val, apertura_val, edad_val, metodo='centroid'):
-    sistema = cargar_recomendabilidad()
-    simulacion = ctrl.ControlSystemSimulation(sistema)
+    sistema = cargar_recomendabilidad(metodo)
+    simulacion = ctrl.ControlSystemSimulation(ctrl.ControlSystem(sistema.rules))
 
-    # Establecer el método de defuzzificación deseado
-    simulacion.ctrl.consequents[0].defuzzify_method = metodo
-
-    # Entrada de datos
     simulacion.input['interes'] = interes_val
     simulacion.input['apertura'] = apertura_val
     simulacion.input['edad'] = edad_val
 
-    # Computar resultado
     simulacion.compute()
-
-    # Resultado
     return simulacion.output['recomendabilidad']
+
     
